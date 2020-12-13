@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+import { ReactQueryDevtools } from "react-query-devtools";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { ReactQueryDevtools } from "react-query-devtools";
 
 ReactDOM.render(
   <React.StrictMode>

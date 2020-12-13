@@ -3,7 +3,9 @@ import { parse } from "http-link-header";
 import Pagination from "rc-pagination";
 import { usePaginatedQuery } from "react-query";
 import { useRecoilState, useRecoilValue } from "recoil";
+
 import { currentRepoState, pullRequestsPaginationState } from "../../states";
+import "rc-pagination/assets/index.css";
 
 class FetchError extends Error {
   error: any;
@@ -60,24 +62,26 @@ export const PullRequestList = () => {
     },
   );
 
-  if (isFetching) return <>Loading...</>;
-
-  if (error) return <>An error has occurred: {error.message}</>;
-
   console.log(totalPage);
 
   return (
     <div>
-      <ul>
-        {latestData?.map((pull) => (
-          <li key={pull.id}>
-            <a href={pull.html_url} target="_blank" rel="noopener noreferrer">
-              <p>{pull.title}</p>
-              <p>{pull.user.login}</p>
-            </a>
-          </li>
-        ))}
-      </ul>
+      {isFetching ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>An error has occurred: {error.message}</p>
+      ) : (
+        <ul>
+          {latestData?.map((pull) => (
+            <li key={pull.id}>
+              <a href={pull.html_url} target="_blank" rel="noopener noreferrer">
+                <p>{pull.title}</p>
+                <p>{pull.user.login}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
       <Pagination
         current={page}
         total={totalPage * perPage}

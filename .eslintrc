@@ -5,10 +5,10 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:react-hooks/recommended",
-    "prettier",
-    "prettier/@typescript-eslint",
     "plugin:import/errors",
-    "plugin:import/warnings"
+    "plugin:import/warnings",
+    "prettier",
+    "prettier/@typescript-eslint"
   ],
   "plugins": ["@typescript-eslint", "react"],
   "parser": "@typescript-eslint/parser",
@@ -30,7 +30,14 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "import/order": ["error"],
+    "import/order": [
+      "error",
+      {
+        "alphabetize": {
+          "order": "asc"
+        }
+      }
+    ],
     "import/no-unresolved": "off"
   }
 }
