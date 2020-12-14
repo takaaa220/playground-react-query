@@ -1,31 +1,8 @@
-import axios from "axios";
-import { parse } from "http-link-header";
 import { useCallback } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
-import { currentRepoState, pullRequestsPaginationState } from "../../states";
-
-export class FetchError extends Error {
-  error: any;
-
-  constructor(message: string, error: { message: string }) {
-    super(message);
-
-    this.error = error;
-  }
-}
-
-export type PR = {
-  id: string;
-  title: string;
-  html_url: string;
-  number: string;
-  user: {
-    login: string;
-    url: string;
-    avatar_url: string;
-  };
-};
+import { fetchPullRequests, PR, FetchError } from "../api/pullRequests";
+import { currentRepoState, pullRequestsPaginationState } from "../states";
 
 export const usePullRequests = () => {
   const client = useQueryClient();
@@ -55,24 +32,12 @@ export const usePullRequests = () => {
     async (page: number, currentRepo: string, perPage: number) => {
       if (!currentRepo) return [];
 
-      const { data, headers } = await axios.get(
-        `https://api.github.com/repos/${currentRepo}/pulls?page=${page}&per_page=${perPage}`,
-      );
+      const { data, lastPage } = await fetchPullRequests({ page, repo: currentRepo, perPage });
 
-      if (!headers.link) return data;
-      const link = parse(headers.link);
-
-      const lastPage = link.get("rel", "last")[0];
-
-      if (lastPage) {
-        const uri = new URL(lastPage.uri);
-        const params = new URLSearchParams(uri.search);
-
-        setPagination((current) => ({
-          ...current,
-          totalPage: Number(params.get("page") ?? 1),
-        }));
-      }
+      setPagination((current) => ({
+        ...current,
+        totalPage: lastPage,
+      }));
 
       return data;
     },

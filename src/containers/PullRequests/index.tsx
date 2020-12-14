@@ -2,10 +2,10 @@ import { RouteComponentProps } from "@reach/router";
 import { FormEvent, useState } from "react";
 import { useRecoilValue } from "recoil";
 
+import { usePullRequests } from "../../hooks/usePullRequests";
 import { currentRepoState } from "../../states";
 
 import { PullRequestList } from "./List";
-import { usePullRequests } from "./usePullRequests";
 
 export const PullRequests = (_: RouteComponentProps) => {
   const currentRepo = useRecoilValue(currentRepoState);

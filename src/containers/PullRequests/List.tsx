@@ -2,7 +2,7 @@ import { Link } from "@reach/router";
 import Pagination from "rc-pagination";
 import "rc-pagination/assets/index.css";
 import { useEffect } from "react";
-import { usePullRequests } from "./usePullRequests";
+import { usePullRequests } from "../../hooks/usePullRequests";
 
 export const PullRequestList = () => {
   const { isLoading, error, data, page, totalPage, perPage, onChangePage } = usePullRequests();

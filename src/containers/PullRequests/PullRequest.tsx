@@ -1,5 +1,5 @@
 import { RouteComponentProps } from "@reach/router";
-import { usePullRequest } from "./usePullRequest";
+import { usePullRequest } from "../../hooks/usePullRequest";
 
 type Props = RouteComponentProps & {
   id?: string;
