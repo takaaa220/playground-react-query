@@ -1,14 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import { ReactQueryDevtools } from "react-query-devtools";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
-    <ReactQueryDevtools initialIsOpen />
   </React.StrictMode>,
   document.getElementById("root"),
 );

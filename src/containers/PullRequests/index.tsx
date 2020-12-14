@@ -1,30 +1,32 @@
+import { RouteComponentProps } from "@reach/router";
 import { FormEvent, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
-import { queryCache } from "../../App";
 import { currentRepoState } from "../../states";
 
 import { PullRequestList } from "./List";
+import { usePullRequests } from "./usePullRequests";
 
-export const PullRequests = () => {
-  const [currentRepo, setCurrentRepo] = useRecoilState(currentRepoState);
+export const PullRequests = (_: RouteComponentProps) => {
+  const currentRepo = useRecoilValue(currentRepoState);
   const [value, setValue] = useState(currentRepo);
+  const { onChangeRepo } = usePullRequests();
 
   const handleChangeRepo = (e: FormEvent) => {
     e.preventDefault();
 
-    queryCache.invalidateQueries("repoData");
-    setCurrentRepo(value);
+    onChangeRepo(value);
   };
 
   return (
-    <div>
-      <form onSubmit={handleChangeRepo}>
+    <div className="container">
+      <form onSubmit={handleChangeRepo} className="mb-2">
         <input
           type="text"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="レポジトリ"
+          className="p-2 border-black"
         />
       </form>
       {currentRepo ? <PullRequestList /> : null}

@@ -1,17 +1,27 @@
+import { Router } from "@reach/router";
 import React from "react";
-import { QueryCache, ReactQueryCacheProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { RecoilRoot } from "recoil";
-import "./App.css";
 import { PullRequests } from "./containers/PullRequests";
+import { PullRequest } from "./containers/PullRequests/PullRequest";
+import "./App.css";
+import "./styles/index.css";
 
-export const queryCache = new QueryCache();
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <RecoilRoot>
-      <ReactQueryCacheProvider queryCache={queryCache}>
-        <PullRequests />
-      </ReactQueryCacheProvider>
+      <QueryClientProvider client={queryClient}>
+        <div className="container m-auto p-2">
+          <Router>
+            <PullRequest path="/:id" />
+            <PullRequests path="*" />
+          </Router>
+        </div>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </RecoilRoot>
   );
 }
