@@ -3,8 +3,8 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { RecoilRoot } from "recoil";
+import { PullRequest } from "./containers/PullRequest";
 import { PullRequests } from "./containers/PullRequests";
-import { PullRequest } from "./containers/PullRequests/PullRequest";
 import "./App.css";
 import "./dist/index.css";
 
