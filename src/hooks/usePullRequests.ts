@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
-import { fetchPullRequests, PR, FetchError } from "../api/pullRequests";
+import { fetchPullRequests2 as fetchPullRequests, PR, FetchError } from "../api/pullRequests";
 import { currentRepoState, pullRequestsPaginationState } from "../states";
 
 export const usePullRequests = () => {
@@ -45,7 +45,7 @@ export const usePullRequests = () => {
   );
 
   const { isLoading, error, data, isFetching } = useQuery<PR[], FetchError>(
-    ["repoData", { page, currentRepo, perPage }],
+    ["repoData", currentRepo, { page, perPage }],
     () => fetchData(page, currentRepo, perPage),
   );
 
