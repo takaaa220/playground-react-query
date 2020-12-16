@@ -7,6 +7,7 @@ import {
   FetchError,
   addPullRequest,
 } from "../api/pullRequests";
+import { QUERY_KEYS } from "../queries";
 import { currentRepoState, pullRequestsPaginationState } from "../states";
 
 export const usePullRequests = () => {
@@ -53,25 +54,23 @@ export const usePullRequests = () => {
       return addPullRequest({ title });
     },
     {
-      onSuccess: () => {
-        client.invalidateQueries(["repoData", currentRepo]);
+      onSuccess: (data) => {
+        client.invalidateQueries([QUERY_KEYS.PullLists, currentRepo]);
+        client.setQueryData([QUERY_KEYS.Pull, currentRepo, data.number], data);
       },
     },
   );
 
-  const { isLoading, error, data, isFetching } = useQuery<PR[], FetchError>(
-    ["repoData", currentRepo, { page, perPage }],
+  const query = useQuery<PR[], FetchError>(
+    [QUERY_KEYS.PullLists, currentRepo, { page, perPage }],
     () => fetchData(page, currentRepo, perPage),
   );
 
   return {
+    ...query,
     page,
     totalPage,
     perPage,
-    error,
-    data,
-    isFetching,
-    isLoading,
     onChangePage,
     onChangeRepo,
     addMutation,

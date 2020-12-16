@@ -7,6 +7,7 @@ import {
   deletePullRequest,
   updatePullRequest,
 } from "../api/pullRequests";
+import { QUERY_KEYS } from "../queries";
 import { currentRepoState } from "../states";
 
 export const usePullRequest = (id: string) => {
@@ -15,17 +16,17 @@ export const usePullRequest = (id: string) => {
 
   const deleteMutation = useMutation(() => deletePullRequest(id), {
     onSuccess: async () => {
-      client.invalidateQueries([currentRepo, id]);
+      client.invalidateQueries([QUERY_KEYS.Pull, currentRepo, id]);
     },
   });
 
   const updateMutation = useMutation((title: string) => updatePullRequest(id, { title }), {
     onSuccess: async () => {
-      client.invalidateQueries([currentRepo, id]);
+      client.invalidateQueries([QUERY_KEYS.Pull, currentRepo, id]);
     },
   });
 
-  const query = useQuery<PR, FetchError>([currentRepo, id], async () => {
+  const query = useQuery<PR, FetchError>([QUERY_KEYS.Pull, currentRepo, id], async () => {
     return fetchPullRequest({ repo: currentRepo, id });
   });
 

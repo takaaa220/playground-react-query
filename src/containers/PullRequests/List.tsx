@@ -7,6 +7,7 @@ import { usePullRequests } from "../../hooks/usePullRequests";
 export const PullRequestList = () => {
   const [value, setValue] = useState("");
   const {
+    isFetching,
     isLoading,
     error,
     data,
@@ -35,7 +36,7 @@ export const PullRequestList = () => {
       ) : error ? (
         <p>An error has occurred: {error.message}</p>
       ) : (
-        <div>
+        <div className="relative">
           <form onSubmit={handleAddPullRequest}>
             {!addMutation.isLoading ? (
               <input value={value} onChange={(e) => setValue(e.target.value)} />
@@ -69,6 +70,7 @@ export const PullRequestList = () => {
               </li>
             ))}
           </ul>
+          {isFetching && <div className="absolute top-2 right-12">更新中...</div>}
         </div>
       )}
       <Pagination
