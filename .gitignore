@@ -11,6 +11,9 @@
 # production
 /build
 
+# codegen
+dist
+
 # misc
 .DS_Store
 .env.local

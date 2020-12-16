@@ -6,7 +6,7 @@ import { RecoilRoot } from "recoil";
 import { PullRequests } from "./containers/PullRequests";
 import { PullRequest } from "./containers/PullRequests/PullRequest";
 import "./App.css";
-import "./styles/index.css";
+import "./dist/index.css";
 
 const queryClient = new QueryClient();
 
