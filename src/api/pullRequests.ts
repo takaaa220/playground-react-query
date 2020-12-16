@@ -72,7 +72,6 @@ const _create = (pull?: Partial<PR>) => {
   currentId++;
 
   return {
-    ...pull,
     id: `id-${currentId}`,
     title: `title-title-title-${currentId}`,
     html_url: "https://aaa.exapmle.com",
@@ -82,6 +81,7 @@ const _create = (pull?: Partial<PR>) => {
       url: "https://aaa.example.com",
       avatar_url: "https://aaa.example.com/a.pn",
     },
+    ...pull,
   };
 };
 

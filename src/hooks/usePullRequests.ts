@@ -1,7 +1,12 @@
 import { useCallback } from "react";
-import { useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
-import { fetchPullRequests2 as fetchPullRequests, PR, FetchError } from "../api/pullRequests";
+import {
+  fetchPullRequests2 as fetchPullRequests,
+  PR,
+  FetchError,
+  addPullRequest,
+} from "../api/pullRequests";
 import { currentRepoState, pullRequestsPaginationState } from "../states";
 
 export const usePullRequests = () => {
@@ -21,11 +26,10 @@ export const usePullRequests = () => {
 
   const onChangeRepo = useCallback(
     (repo: string) => {
-      client.invalidateQueries("repoData");
       setCurrentRepo(repo);
       setPagination({ page: 1, totalPage: 1, perPage: 30 });
     },
-    [setPagination, setCurrentRepo, client],
+    [setPagination, setCurrentRepo],
   );
 
   const fetchData = useCallback(
@@ -44,6 +48,17 @@ export const usePullRequests = () => {
     [setPagination],
   );
 
+  const addMutation = useMutation(
+    async (title: string) => {
+      return addPullRequest({ title });
+    },
+    {
+      onSuccess: () => {
+        client.invalidateQueries(["repoData", currentRepo]);
+      },
+    },
+  );
+
   const { isLoading, error, data, isFetching } = useQuery<PR[], FetchError>(
     ["repoData", currentRepo, { page, perPage }],
     () => fetchData(page, currentRepo, perPage),
@@ -59,5 +74,6 @@ export const usePullRequests = () => {
     isLoading,
     onChangePage,
     onChangeRepo,
+    addMutation,
   };
 };

@@ -16,14 +16,12 @@ export const usePullRequest = (id: string) => {
   const deleteMutation = useMutation(() => deletePullRequest(id), {
     onSuccess: async () => {
       client.invalidateQueries([currentRepo, id]);
-      client.invalidateQueries(["repoData", currentRepo]);
     },
   });
 
   const updateMutation = useMutation((title: string) => updatePullRequest(id, { title }), {
     onSuccess: async () => {
       client.invalidateQueries([currentRepo, id]);
-      client.invalidateQueries(["repoData", currentRepo]);
     },
   });
 
